@@ -8,35 +8,32 @@ import BaiTapLon.Controllers.NguoiDungController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.TableModel;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.BaseColor;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -46,7 +43,7 @@ public class frmQuanLyNguoiDung extends javax.swing.JFrame {
 
     private static DefaultTableModel model;
     private static List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
-    private String macu;
+    private String macu, timKiem;
     private boolean ktThem;
     private FileOutputStream out;
     DecimalFormat formatter = new DecimalFormat("###,###,###");
@@ -187,6 +184,11 @@ public class frmQuanLyNguoiDung extends javax.swing.JFrame {
         btnTimKiem.setForeground(new java.awt.Color(40, 46, 62));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/magnifier.png"))); // NOI18N
         btnTimKiem.setText("Tìm Kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -743,9 +745,209 @@ public class frmQuanLyNguoiDung extends javax.swing.JFrame {
 //        return fileToSave;
 //    }
 
+    private static CellStyle createStyleForHeader(XSSFSheet sheet) {
+        // Create font
+        org.apache.poi.ss.usermodel.Font font = sheet.getWorkbook().createFont();
+        font.setFontName("Times New Roman");
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 12); // font size
+        font.setColor(IndexedColors.WHITE.getIndex()); // text color
+
+        // Create CellStyle
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        cellStyle.setFont(font);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
+        cellStyle.setFillForegroundColor(IndexedColors.DARK_GREEN.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setWrapText(true);
+        return cellStyle;
+    }
+
+    private void ExportExcel(ResultSet rs) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet spreadsheet = workbook.createSheet("NguoiDung");
+            // register the columns you wish to track and compute the column width
+
+            CreationHelper createHelper = workbook.getCreationHelper();
+
+            XSSFRow row = null;
+            Cell cell = null;
+
+            row = spreadsheet.createRow((short) 2);
+            row.setHeight((short) 500);
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("DANH SÁCH NGƯỜI DÙNG");
+
+            //Tạo dòng tiêu đều của bảng
+            // create CellStyle
+            CellStyle cellStyle_Head = createStyleForHeader(spreadsheet);
+            row = spreadsheet.createRow((short) 3);
+            row.setHeight((short) 500);
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Mã Người Dùng");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Họ Tên");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Số Điện Thoại");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Email");
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Địa Chỉ");
+
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Mật Khẩu");
+
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellStyle(cellStyle_Head);
+            cell.setCellValue("Phân Quyền");
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int tongsocot = rsmd.getColumnCount();
+
+            //Đinh dạng Tạo đường kẻ cho ô chứa dữ liệu
+            CellStyle cellStyle_data = spreadsheet.getWorkbook().createCellStyle();
+            cellStyle_data.setBorderLeft(BorderStyle.THIN);
+            cellStyle_data.setBorderRight(BorderStyle.THIN);
+            cellStyle_data.setBorderBottom(BorderStyle.THIN);
+
+            int i = 0;
+            while (rs.next()) {
+                row = spreadsheet.createRow((short) 4 + i);
+                row.setHeight((short) 400);
+
+                cell = row.createCell(0);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(i + 1);
+
+                cell = row.createCell(1);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("Id"));
+
+                cell = row.createCell(2);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("HoTen"));
+
+                //Định dạng ngày tháng trong excel
+//                java.util.Date ngay = new java.util.Date(rs.getDate("Ngaysinh").getTime());
+//                CellStyle cellStyle = workbook.createCellStyle();
+//                cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy"));
+//                cellStyle.setBorderLeft(BorderStyle.THIN);
+//                cellStyle.setBorderRight(BorderStyle.THIN);
+//                cellStyle.setBorderBottom(BorderStyle.THIN);
+//                cell = row.createCell(3);
+//                cell.setCellValue(ngay);
+//                cell.setCellStyle(cellStyle);
+                cell = row.createCell(3);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("DienThoai"));
+
+                cell = row.createCell(4);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("Email"));
+
+                cell = row.createCell(5);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("DiaChi"));
+
+                cell = row.createCell(6);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("MatKhau"));
+
+                cell = row.createCell(7);
+                cell.setCellStyle(cellStyle_data);
+                cell.setCellValue(rs.getString("VaiTro"));
+
+                i++;
+            }
+            //Hiệu chỉnh độ rộng của cột
+            for (int col = 0; col < tongsocot; col++) {
+                spreadsheet.autoSizeColumn(col);
+            }
+
+            File f = new File("D:\\Nam3\\Ky3\\JAVASWING\\BaiTapLon\\DUOGBACH.xlsx");
+            out = new FileOutputStream(f);
+            workbook.write(out);
+            out.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-       
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            String timkiem = txtTimKiem.getText();
+            con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;user=sa;password=bachdeptrai123");
+            String SQL;
+            if (timkiem != null && !timkiem.isEmpty()) {
+                SQL = "SELECT * FROM NguoiDung WHERE Id LIKE ? OR DienThoai LIKE ?";
+                statement = con.prepareStatement(SQL);
+                statement.setString(1, "%" + timkiem + "%");
+                statement.setString(2, "%" + timkiem + "%");
+            } else {
+                SQL = "SELECT * FROM NguoiDung";
+                statement = con.prepareStatement(SQL);
+            }
+            rs = statement.executeQuery();
+
+            // Hiển thị dữ liệu từ ResultSet lên JTable
+            ExportExcel(rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        timKiem = txtTimKiem.getText();
+        arrNguoiDung = BaiTapLon.Controllers.NguoiDungController.TimKiemNguoiDung(timKiem);
+//        System.out.println("data" + arrNguoiDung);
+        model.setRowCount(0);
+        arrNguoiDung.forEach((NguoiDung) -> {
+            model.addRow(new Object[]{
+                NguoiDung.getId(),
+                NguoiDung.getHoTen(),
+                NguoiDung.getDienThoai(),
+                NguoiDung.getEmail(),
+                NguoiDung.getDiaChi(),
+                NguoiDung.getMatKhau(),
+                NguoiDung.getRole(),});
+        });
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
     /**
      * @param args the command line arguments

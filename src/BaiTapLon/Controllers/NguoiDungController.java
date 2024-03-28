@@ -26,11 +26,9 @@ public class NguoiDungController {
     public static Statement state = null;
     public static String sql;
     private static String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;user=sa;password=bachdeptrai123";
+    private static List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
 
     public static List<BaiTapLon.Model.NguoiDungModel> LayNguonNguoiDung() {
-        List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
-        conn = null;
-        state = null;
         try {
             conn = DriverManager.getConnection(dbURL);
             sql = "Select * From NguoiDung  where trash !=0 Order by HoTen";
@@ -72,7 +70,6 @@ public class NguoiDungController {
     }
 
     public static void ThemNguoiDung(BaiTapLon.Model.NguoiDungModel nguoidung) {
-        conn = null;
         PreparedStatement state = null;
         try {
             conn = DriverManager.getConnection(dbURL);
@@ -114,9 +111,7 @@ public class NguoiDungController {
     }
 
     public static void XoaVaoThungRac(String manguoidung) {
-        conn = null;
         PreparedStatement state = null;
-
         try {
             conn = DriverManager.getConnection(NguoiDungController.dbURL);
 
@@ -149,7 +144,6 @@ public class NguoiDungController {
     }
 
     public static void CapNhatNguoiDung(BaiTapLon.Model.NguoiDungModel nguoidung, String macu) {
-        conn = null;
         PreparedStatement state = null;
         try {
             LocalDateTime currentTime = LocalDateTime.now();
@@ -187,5 +181,47 @@ public class NguoiDungController {
                 }
             }
         }
+    }
+
+    public static List<BaiTapLon.Model.NguoiDungModel> TimKiemNguoiDung(String timkiem) {
+        List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
+        PreparedStatement state = null;
+        ResultSet rs = null;
+        try {
+            conn = DriverManager.getConnection(dbURL);
+            String sql = "SELECT * FROM NguoiDung WHERE Id LIKE ? OR DienThoai LIKE ? AND status = 1 AND trash != 0";
+            state = conn.prepareStatement(sql);
+            state.setString(1, "%" + timkiem + "%");
+            state.setString(2, "%" + timkiem + "%");
+            rs = state.executeQuery();
+            while (rs.next()) {
+                BaiTapLon.Model.NguoiDungModel user = new BaiTapLon.Model.NguoiDungModel();
+                user.setId(rs.getLong("Id"));
+                user.setHoTen(rs.getString("HoTen"));
+                user.setDienThoai(rs.getString("DienThoai"));
+                user.setEmail(rs.getString("Email"));
+                user.setDiaChi(rs.getString("DiaChi"));
+                user.setMatKhau(rs.getString("MatKhau"));
+                user.setRole(rs.getString("VaiTro"));
+                arrNguoiDung.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (state != null) {
+                    state.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arrNguoiDung;
     }
 }
