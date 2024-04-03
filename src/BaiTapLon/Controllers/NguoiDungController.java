@@ -111,36 +111,20 @@ public class NguoiDungController {
     }
 
     public static void XoaVaoThungRac(String manguoidung) {
-        PreparedStatement state = null;
         try {
-            conn = DriverManager.getConnection(NguoiDungController.dbURL);
-
-            sql = "UPDATE NguoiDung SET trash = ? WHERE Id = ?";
+            PreparedStatement state = null;
+            conn = DriverManager.getConnection(dbURL);
+            if (manguoidung == null) {
+                throw new SQLException("Order rỗng");
+            }
+            String sql = "UPDATE NguoiDung SET trash = ? WHERE Id = ?";
             state = conn.prepareStatement(sql);
-            state.setInt(1, 0);     // chuyển trash về 0 là bỏ vô thùng rác
+            state.setInt(1, 0);
             state.setString(2, manguoidung);
-            state.execute();
-            state.close();
-            conn.close();
+            state.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (state != null) {
-                try {
-                    state.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
-
     }
 
     public static void CapNhatNguoiDung(BaiTapLon.Model.NguoiDungModel nguoidung, String macu) {
