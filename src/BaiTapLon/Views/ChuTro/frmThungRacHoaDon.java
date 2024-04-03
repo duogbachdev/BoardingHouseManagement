@@ -4,6 +4,18 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -13,6 +25,11 @@ public class frmThungRacHoaDon extends javax.swing.JFrame {
     /**
      * Creates new form frmThungRacHoaDon
      */
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
+    String user = "sa";
+    String pass = "12345";
+    Connection con;
+
     public frmThungRacHoaDon() {
         initComponents();
     }
@@ -26,21 +43,355 @@ public class frmThungRacHoaDon extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrame1 = new javax.swing.JFrame();
+        jPanel2 = new javax.swing.JPanel();
+        btnXoaVinhVien = new javax.swing.JButton();
+        btnKhoiPhuc = new javax.swing.JButton();
+        btnTroVe = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbHoaDonRac = new javax.swing.JTable();
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        btnXoaVinhVien.setBackground(new java.awt.Color(204, 255, 204));
+        btnXoaVinhVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXoaVinhVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete.png"))); // NOI18N
+        btnXoaVinhVien.setText("Xóa vĩnh viễn");
+        btnXoaVinhVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaVinhVienActionPerformed(evt);
+            }
+        });
+
+        btnKhoiPhuc.setBackground(new java.awt.Color(204, 255, 204));
+        btnKhoiPhuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnKhoiPhuc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/return.png"))); // NOI18N
+        btnKhoiPhuc.setText("Khôi phục");
+        btnKhoiPhuc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKhoiPhucActionPerformed(evt);
+            }
+        });
+
+        btnTroVe.setBackground(new java.awt.Color(204, 255, 204));
+        btnTroVe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTroVe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/return (1).png"))); // NOI18N
+        btnTroVe.setText("Trở về");
+        btnTroVe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTroVeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(btnKhoiPhuc, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(btnXoaVinhVien, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(btnTroVe, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnKhoiPhuc, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoaVinhVien, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTroVe, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel1.setText("THÙNG RÁC HÓA ĐƠN");
+
+        tbHoaDonRac.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        tbHoaDonRac.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID hóa đơn", "ID hợp đồng", "Ngày BĐ", "Ngày KT", "Tiền Điện", "Tiền Nước", "Tiền Internet", "Tiền rác", "Tiền phòng", "Khấu trừ", "Nợ", "Tổng cộng", "Tình trạng"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbHoaDonRac.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbHoaDonRacMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbHoaDonRac);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(453, 453, 453)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(225, 225, 225)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 282, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTroVeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTroVeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTroVeActionPerformed
+
+    private void tbHoaDonRacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHoaDonRacMouseClicked
+
+    }//GEN-LAST:event_tbHoaDonRacMouseClicked
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        try {
+            String sql = "SELECT * from HoaDon WHERE Trash = 0";
+            fillHoaDon(sql);
+        } catch (ClassNotFoundException | SQLException e) {
+            Logger.getLogger(frmHoaDon.class.getName());
+        }
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnKhoiPhucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhoiPhucActionPerformed
+        // TODO add your handling code here:try {
+
+        try {
+            Connection con = null;
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+            int i = tbHoaDonRac.getSelectedRow();
+            DefaultTableModel tm = (DefaultTableModel) tbHoaDonRac.getModel();
+            String idHoaDon = tm.getValueAt(i, 0).toString();
+
+            // Kiểm tra xem hóa đơn có tồn tại và chưa bị đưa vào thùng rác trước đó
+            String checkSql = "SELECT * FROM HoaDon WHERE IdHopDong = ? AND Trash = 0";
+            PreparedStatement checkStmt = con.prepareStatement(checkSql);
+            checkStmt.setString(1, idHoaDon);
+            ResultSet checkResult = checkStmt.executeQuery();
+
+            if (checkResult.next()) {
+                // Cập nhật giá trị cột "Trash" thành 1 (đưa vào thùng rác)
+                String updateSql = "UPDATE HoaDon SET Trash = 1 WHERE IdHopDong = ?";
+                PreparedStatement updateStmt = con.prepareStatement(updateSql);
+                updateStmt.setString(1, idHoaDon);
+                int rowsUpdated = updateStmt.executeUpdate();
+                updateStmt.close();
+
+                if (rowsUpdated > 0) {
+                    String sql = "SELECT * from HoaDon WHERE Trash = 0";
+                    fillHoaDon(sql);
+                    JOptionPane.showMessageDialog(this, "Khôi phục thành công");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Khôi phục thất bại");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Hóa đơn đã được khôi phục trước đó");
+            }
+
+            checkStmt.close();
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi khi đưa vào thùng rác: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnKhoiPhucActionPerformed
+
+    private void btnXoaVinhVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaVinhVienActionPerformed
+        // TODO add your handling code here:
+        try {
+            int selectedRow = tbHoaDonRac.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để xóa.");
+                return;
+            }
+
+            int i = tbHoaDonRac.getSelectedRow();
+            DefaultTableModel tm = (DefaultTableModel) tbHoaDonRac.getModel();
+            String idHoaDon = tm.getValueAt(i, 0).toString();
+
+            String sql = "DELETE FROM HoaDon WHERE Id = ?";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            try (Connection con = DriverManager.getConnection(url, user, pass); PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setString(1, idHoaDon);
+
+                int rowsDeleted = pstmt.executeUpdate();
+
+                if (rowsDeleted > 0) {
+                     sql = "SELECT * from HoaDon WHERE Trash = 0";
+                    fillHoaDon(sql);
+                    JOptionPane.showMessageDialog(this, "Xóa thành công.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy hóa đơn với mã hợp đồng đã nhập.");
+                }
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi khi xóa: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnXoaVinhVienActionPerformed
+    public void fillHoaDon(String sql) throws ClassNotFoundException, SQLException {
+        tbHoaDonRac.removeAll();
+        try {
+            Connection con = null;
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            // Lấy giá điện và giá nước từ bảng DonGia_Config
+            float giaDien = 0;
+            float giaNuoc = 0;
+            String sqlConfig = "SELECT * FROM DonGia_Config";
+            Statement stConfig = con.createStatement();
+            ResultSet rsConfig = stConfig.executeQuery(sqlConfig);
+            while (rsConfig.next()) {
+                String keyword = rsConfig.getString("Keyword");
+                float value = rsConfig.getFloat("Value");
+                if (keyword.equals("Giá điện")) {
+                    giaDien = value;
+                } else if (keyword.equals("Giá nước")) {
+                    giaNuoc = value;
+                }
+            }
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            String[] rowhead = {"ID hóa đơn", "ID hợp đồng", "Ngày BĐ", "Ngày KT", "Tiền điện", "Tiền nước", "Tiền Internet", "Tiền rác", "Tiền phòng", "Khấu trừ", "Nợ", "Tổng cộng", "Tình trạng"};
+            DefaultTableModel model = new DefaultTableModel(rowhead, 0);
+            while (rs.next()) {
+                Vector vt = new Vector();
+                vt.add(rs.getString("Id"));
+                vt.add(rs.getString("IdHopDong"));
+                vt.add(rs.getDate("NgayBatDau"));
+                vt.add(rs.getDate("NgayKetThuc"));
+
+                // Lấy giá trị từ cột SoDienCu, SoDienMoi, SoNuocCu, SoNuocMoi trong bảng HoaDon
+                float sodiencu = rs.getFloat("SoDienCu");
+                float sodienmoi = rs.getFloat("SoDienMoi");
+                float sonuoccu = rs.getFloat("SoNuocCu");
+                float sonuocmoi = rs.getFloat("SoNuocMoi");
+
+                // Tính toán tiền điện và tiền nước
+                float tienDien = 0;
+                float tienNuoc = 0;
+
+                // Nếu cả chỉ số và giá đều có giá trị hợp lệ, thực hiện tính toán
+                if (sodiencu != 0 && sodienmoi != 0 && giaDien != 0) {
+                    tienDien = (sodienmoi - sodiencu) * giaDien;
+                } else {
+                    // Nếu không thể tính toán, đặt tienDien = 0
+                    tienDien = 0;
+                }
+
+                if (sonuoccu != 0 && sonuocmoi != 0 && giaNuoc != 0) {
+                    tienNuoc = (sonuocmoi - sonuoccu) * giaNuoc;
+                } else {
+                    // Nếu không thể tính toán, đặt tienNuoc = 0
+                    tienNuoc = 0;
+                }
+
+                DecimalFormat decimalFormat = new DecimalFormat("#,###"); // Định dạng số
+                vt.add(decimalFormat.format(tienDien));
+                vt.add(decimalFormat.format(tienNuoc));
+
+                // Lấy giá trị TiềnPhong từ bảng HopDong dựa trên IdHopDong
+                String idHopDong = rs.getString("IdHopDong");
+                float tienPhong = 0;
+                float tieninternet = 0;
+                float tienrac = 0;
+                if (idHopDong != null && !idHopDong.isEmpty()) {
+                    String sqlHopDong = "SELECT GiaInternet, GiaRac, GiaPhong FROM HopDong WHERE Id = " + idHopDong;
+                    Statement stHopDong = con.createStatement();
+                    ResultSet rsHopDong = stHopDong.executeQuery(sqlHopDong);
+                    if (rsHopDong.next()) {
+                        tienPhong = rsHopDong.getFloat("GiaPhong");
+                        tieninternet = rsHopDong.getFloat("GiaInternet");
+                        tienrac = rsHopDong.getFloat("GiaRac");
+
+                    }
+                }
+
+                vt.add(decimalFormat.format(tieninternet));
+                vt.add(decimalFormat.format(tienrac));
+                vt.add(decimalFormat.format(tienPhong));
+                Object khauTruValue = rs.getObject("KhauTru");
+                String khauTruFormatted = khauTruValue instanceof Number ? decimalFormat.format(khauTruValue) : khauTruValue.toString();
+                vt.add(khauTruFormatted);
+
+// Xử lý giá trị "Nợ"
+                Object tienNoValue = rs.getObject("TienNo");
+                String tienNoFormatted = tienNoValue instanceof Number ? decimalFormat.format(tienNoValue) : tienNoValue.toString();
+                vt.add(tienNoFormatted);
+
+// Xử lý giá trị "Tổng cộng"
+                Object tongCongValue = rs.getObject("TongCong");
+                String tongCongFormatted = tongCongValue instanceof Number ? decimalFormat.format(tongCongValue) : tongCongValue.toString();
+                vt.add(tongCongFormatted);;
+
+                // Thêm tình trạng "đã thanh toán" hoặc "chưa thanh toán" dựa trên trường Status
+                int status = rs.getInt("Status");
+                String tinhTrang = status == 1 ? "đã thanh toán" : "chưa thanh toán";
+                vt.add(tinhTrang);
+
+                model.addRow(vt);
+            }
+            tbHoaDonRac.setModel(model);
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -78,5 +429,13 @@ public class frmThungRacHoaDon extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnKhoiPhuc;
+    private javax.swing.JButton btnTroVe;
+    private javax.swing.JButton btnXoaVinhVien;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbHoaDonRac;
     // End of variables declaration//GEN-END:variables
 }

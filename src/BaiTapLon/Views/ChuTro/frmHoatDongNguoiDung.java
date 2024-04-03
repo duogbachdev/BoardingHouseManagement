@@ -4,6 +4,16 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -13,6 +23,11 @@ public class frmHoatDongNguoiDung extends javax.swing.JFrame {
     /**
      * Creates new form frmHoatDongNguoiDung
      */
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
+    String user = "sa";
+    String pass = "12345";
+    Connection con;
+
     public frmHoatDongNguoiDung() {
         initComponents();
     }
@@ -26,25 +41,101 @@ public class frmHoatDongNguoiDung extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbHoatDongNguoiDung = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        tbHoatDongNguoiDung.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "D", "ID người dùng", "Thời gian đăng nhập", "Thời gian đăng xuất", "Nội dung"
+            }
+        ));
+        jScrollPane1.setViewportView(tbHoatDongNguoiDung);
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel1.setText("HOẠT ĐỘNG NGƯỜI DÙNG");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(313, 313, 313)
+                        .addComponent(jLabel1)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        try {
+            String sql = "SELECT * FROM Session";
+            fillHoaDon(sql);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_formComponentShown
+
     /**
      * @param args the command line arguments
      */
+    public void fillHoaDon(String sql) throws  SQLException {
+        tbHoatDongNguoiDung.removeAll();
+        try {
+            con = null;
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            String[] rowhead = {"ID", "ID người dùng", "Thời gian đăng nhập", "Thời gian đăng xuất", "Nội dung"};
+            DefaultTableModel model = new DefaultTableModel(rowhead, 0);
+            while (rs.next()) {
+                Vector vt = new Vector();
+                vt.add(rs.getString("Id"));
+                vt.add(rs.getString("IdNguoiDung"));
+                vt.add(rs.getTimestamp("ThoiGianDangNhap"));
+                vt.add(rs.getTimestamp("ThoiGianDangXuat"));
+                vt.add(rs.getString("NoiDung"));
+                
+                model.addRow(vt);
+            }
+            tbHoatDongNguoiDung.setModel(model);
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -78,5 +169,8 @@ public class frmHoatDongNguoiDung extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbHoatDongNguoiDung;
     // End of variables declaration//GEN-END:variables
 }
