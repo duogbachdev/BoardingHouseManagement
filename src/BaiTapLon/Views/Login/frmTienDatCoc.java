@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class frmTienDatCoc extends javax.swing.JFrame {
 String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
     String user = "sa";
-    String pass = "bachdeptrai123";
+    String pass = "1";
     /**
      * Creates new form frmTienDatCo
      */
@@ -206,7 +206,7 @@ public void showtable() throws ClassNotFoundException, SQLException {
 
     private void btlthoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlthoatActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_btlthoatActionPerformed
 
     /**

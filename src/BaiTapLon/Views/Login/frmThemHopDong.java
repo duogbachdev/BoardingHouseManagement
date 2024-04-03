@@ -10,10 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author ADMIN
@@ -21,24 +18,14 @@ import java.time.format.DateTimeFormatter;
 public class frmThemHopDong extends javax.swing.JFrame {
 String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
     String user = "sa";
-    String pass = "bachdeptrai123";
+    String pass = "1";
     /**
      * Creates new form frmThemHopDOng
      */
-   public void setHopDongDetails(String maphongtro, String manguoidung, String tennguoidung, String sodienthoai) {
-        txtmaphongtro.setText(maphongtro);
-        txtmanguoidung.setText(manguoidung);
-        txttennguoidung.setText(tennguoidung);
-        txtsodt.setText(sodienthoai);
-    }
     public frmThemHopDong() {
-        initComponents();      
+        initComponents();
     }
-    DecimalFormat formatter = new DecimalFormat("###,###,###");
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    LocalDateTime currentDateTime = LocalDateTime.now();
-    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String formattedDateTime = currentDateTime.format(formatterTime);
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,7 +36,7 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        btndong = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -60,7 +47,7 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
         jLabel7 = new javax.swing.JLabel();
         txtmaphongtro = new javax.swing.JTextField();
         txtsodt = new javax.swing.JTextField();
-        txttennguoidung = new javax.swing.JTextField();
+        txtnguoidung = new javax.swing.JTextField();
         txtmanguoidung = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -89,14 +76,9 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 205, 31), 2), "", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         jPanel2.setForeground(new java.awt.Color(0, 51, 51));
 
-        btndong.setBackground(new java.awt.Color(255, 255, 51));
-        btndong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btndong.setText("X");
-        btndong.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btndongActionPerformed(evt);
-            }
-        });
+        jButton1.setBackground(new java.awt.Color(255, 255, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setText("X");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -117,12 +99,6 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
 
         jLabel7.setText("Số ĐT:");
 
-        txtmaphongtro.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtmaphongtroFocusLost(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,7 +116,7 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtmaphongtro, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(txttennguoidung))
+                            .addComponent(txtnguoidung))
                         .addGap(47, 47, 47)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
@@ -149,7 +125,7 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtsodt, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
                             .addComponent(txtmanguoidung))))
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,8 +148,8 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
                             .addComponent(txtsodt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(txttennguoidung, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(125, Short.MAX_VALUE))
+                        .addComponent(txtnguoidung, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -181,15 +157,16 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(268, 268, 268)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btndong, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(268, 268, 268)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,7 +176,7 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(btndong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -240,54 +217,53 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(112, 112, 112)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(datengaytao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(datengaybatdau, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtdatcoc, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtgiadien))))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtgiainternet)))
-                        .addGap(40, 40, 40)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(datengaytao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(datengayketthuc, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(datengaybatdau, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtgiaphong)
-                                    .addComponent(txtgianuoc)
-                                    .addComponent(txtgiarac, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))))
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtdatcoc, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtgiadien))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(306, 306, 306)
-                        .addComponent(btlthem, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(179, 179, 179))
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtgiainternet)))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(datengayketthuc, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtgiaphong)
+                            .addComponent(txtgianuoc)
+                            .addComponent(txtgiarac, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))))
+                .addGap(270, 270, 270))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(306, 306, 306)
+                .addComponent(btlthem, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,13 +315,14 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -356,113 +333,64 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
     }// </editor-fold>//GEN-END:initComponents
 
     private void btlthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlthemActionPerformed
-      
-     try {
+        // TODO add your handling code here:
+        try {
         String maphongtro = txtmaphongtro.getText();
-        String manguoidung = txtmanguoidung.getText();
-       
-       
+        String manguoidung = txtmanguoidung.getText();         
+        String tennguoidung = txtnguoidung.getText();
+        String dienthoai = txtsodt.getText();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date ngaybatdau = new Date(datengaybatdau.getDate().getTime());       
-        Date ngayketthuc = new Date(datengayketthuc.getDate().getTime());
+        Date ngaybatdau= new Date(datengaybatdau.getDate().getTime());       
+        Date ngayketthuc= new Date(datengayketthuc.getDate().getTime());
         String datcoc = txtdatcoc.getText();
         String giadien = txtgiadien.getText();
         String giaphong = txtgiaphong.getText();
         String gianuoc = txtgianuoc.getText();
         String giainternet = txtgiainternet.getText();
         String giarac = txtgiarac.getText();
-        
-        
-        
-        Connection con = DriverManager.getConnection(url, user, pass);
+          if (manguoidung.isEmpty() || maphongtro.isEmpty() || tennguoidung.isEmpty() || dienthoai.isEmpty() || datcoc.isEmpty()||
+                      giadien.isEmpty()||giaphong.isEmpty()||gianuoc.isEmpty()||giainternet.isEmpty()||giarac.isEmpty() )          
+          {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
+                return;
+            }
+        Connection con = null;
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        con = DriverManager.getConnection(url, user, pass);
+        String sql = "INSERT INTO HopDong (IdMaPhongTro, IdNguoiDung, HoTen, DienThoai, NgayBatDauThue, NgayKetThucThue, TienDatCoc, GiaDien, GiaPhong,GiaNuoc,GiaInternet,GiaRac) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, maphongtro);
+            pstmt.setString(2, manguoidung);
+            pstmt.setString(3, tennguoidung );
+            pstmt.setString(4, dienthoai);
+            pstmt.setDate(5, ngaybatdau);
+            pstmt.setDate(6, ngayketthuc);
+            pstmt.setString(7, datcoc);
+            pstmt.setString(8, giadien);
+            pstmt.setString(9, giaphong);
+             pstmt.setString(9, gianuoc);
+              pstmt.setString(9, giainternet);
+            int rowsAffected = pstmt.executeUpdate();
+            pstmt.close();
+            con.close();
 
-        
- 
-
-        // Thêm dữ liệu vào bảng HopDong nếu thêm vào bảng NguoiDung thành công
-        
-            String sql = "INSERT INTO HopDong (IdMaPhongTro, IdNguoiDung, NgayBatDauThue, NgayKetThucThue, TienDatCoc, GiaDien, GiaPhong, GiaNuoc, GiaInternet, GiaRac, NgayTao) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmtHopDong = con.prepareStatement(sql);
-            
-        pstmtHopDong.setString(1, maphongtro);
-        pstmtHopDong.setString(2, manguoidung);
-        pstmtHopDong.setDate(3, ngaybatdau);
-        pstmtHopDong.setDate(4,  ngayketthuc );
-        pstmtHopDong.setString(5, datcoc);
-        pstmtHopDong.setString(6, giadien);
-        pstmtHopDong.setString(7, giaphong);
-        pstmtHopDong.setString(8, gianuoc);
-        pstmtHopDong.setString(9, giainternet);
-        pstmtHopDong.setString(10, giarac);
-         pstmtHopDong.setString(11, formattedDateTime);
-
-            int rowsAffectedHopDong = pstmtHopDong.executeUpdate();
-
-            // Kiểm tra xem dữ liệu đã được thêm vào bảng HopDong chưa
-            if (rowsAffectedHopDong > 0) {
+            if (rowsAffected > 0) {
+               
                 JOptionPane.showMessageDialog(this, "Thêm mới thành công");
             } else {
                 JOptionPane.showMessageDialog(this, "Thêm mới thất bại");
             }
         
-
-        con.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }   
+        } catch (Exception e) {
+        }
+        
     }//GEN-LAST:event_btlthemActionPerformed
-
-    private void txtmaphongtroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtmaphongtroFocusLost
-      // TODO add your handling code here:
-// Lấy mã phòng trọ từ trường văn bản khi người dùng rời khỏi trường đó
-String idMaPhongTro = txtmaphongtro.getText().trim();
-
-try {
-    Connection con = null;
-    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    con = DriverManager.getConnection(url, user, pass);
-
-    // Truy vấn để lấy thông tin giá phòng, giá internet, giá rác và giá nước từ bảng PhongTro dựa trên IdMaPhongTro
-    String query = "SELECT GiaPhong, GiaInternet, GiaRac, GiaNuoc, TienDatCoc, GiaDien FROM HopDong WHERE IdMaPhongTro = ?";
-    PreparedStatement pstmt = con.prepareStatement(query);
-    pstmt.setString(1, idMaPhongTro);
-    ResultSet rs = pstmt.executeQuery();
-
-    // Biến để kiểm tra xem ResultSet có dữ liệu hay không
-    boolean found = rs.next();
-
-    if (found) {
-        // Lấy giá trị từ ResultSet và cập nhật lên giao diện
-        txtgiaphong.setText(rs.getString("GiaPhong"));
-        txtgiainternet.setText(rs.getString("GiaInternet"));
-        txtgiarac.setText(rs.getString("GiaRac"));
-        txtgianuoc.setText(rs.getString("GiaNuoc"));
-        txtdatcoc.setText(rs.getString("TienDatCoc"));
-        txtgiadien.setText(rs.getString("GiaDien"));
-    } else {
-        // Hiển thị thông báo nếu không tìm thấy IdMaPhongTro
-        JOptionPane.showMessageDialog(this, "Không tìm thấy mã phòng trọ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-    }
-    
-    pstmt.close();
-    con.close();
-} catch (Exception e) {
-    e.printStackTrace();
-}
-
-    }//GEN-LAST:event_txtmaphongtroFocusLost
-
-    private void btndongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndongActionPerformed
-        // TODO add your handling code here:
-          this.dispose();
-    }//GEN-LAST:event_btndongActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* txtmaloaiphongs look and feel */
+        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -496,10 +424,10 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btlthem;
-    private javax.swing.JButton btndong;
     private com.toedter.calendar.JDateChooser datengaybatdau;
     private com.toedter.calendar.JDateChooser datengayketthuc;
     private com.toedter.calendar.JDateChooser datengaytao;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -527,7 +455,7 @@ try {
     private javax.swing.JTextField txtgiarac;
     private javax.swing.JTextField txtmanguoidung;
     private javax.swing.JTextField txtmaphongtro;
+    private javax.swing.JTextField txtnguoidung;
     private javax.swing.JTextField txtsodt;
-    private javax.swing.JTextField txttennguoidung;
     // End of variables declaration//GEN-END:variables
 }

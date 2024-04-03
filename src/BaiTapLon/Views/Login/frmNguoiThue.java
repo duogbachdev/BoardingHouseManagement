@@ -17,46 +17,46 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ADMIN
  */
-public class frmTienDatCoc extends javax.swing.JFrame {
+public class frmNguoiThue extends javax.swing.JFrame {
 String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
     String user = "sa";
-    String pass = "bachdeptrai123";
+    String pass = "1";
     /**
-     * Creates new form frmTienDatCo
+     * Creates new form frmNguoiThue
      */
-    public frmTienDatCoc() {
+    public frmNguoiThue() {
         initComponents();
     }
-public void showtable() throws ClassNotFoundException, SQLException {
-    tbtiendatcoc.removeAll();
+    public void showtable() throws ClassNotFoundException, SQLException {
+    tbnguoithue.removeAll();
     try {
         Connection con = null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         con = DriverManager.getConnection(url, user, pass);
-        String sql = "SELECT hd.IdMaPhongTro, nd.Hoten, hd.TienDatCoc, hd.NgayBatDauThue, hd.NgayKetThucThue " +
-             "FROM HopDong hd " +
-             "INNER JOIN NguoiDung nd ON hd.idNguoiDung = nd.id";
-
+ String sql = "SELECT nguoidung.id AS 'UserID', nguoidung.HoTen AS 'UserName', phongtro.id AS 'RoomID' "
+                   + "FROM NguoiDung nguoidung INNER JOIN PhongTro phongtro "
+                   + "ON nguoidung.id = phongtro.idNguoiDung";
          
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(sql);
-        String[] rowhead = { "Mã phòng trọ ", "Tên Người Thuê", "Số Tiền Cọc", "Ngay Bat Dau", "Ngay Ket Thuc"};
+        String[] rowhead = { "ID phòng trọ","ID Người Dùng", "Họ Tên" };
         DefaultTableModel model = new DefaultTableModel(rowhead, 0);
         while (rs.next()) {
             Vector vt = new Vector();
-            vt.add(rs.getString("IdMaPhongTro"));
-            vt.add(rs.getString("Hoten"));
-            vt.add(rs.getString("TienDatCoc"));
-            vt.add(rs.getString("NgayBatDauThue"));
-            vt.add(rs.getString("NgayKetThucThue"));
+            vt.add(rs.getString("RoomID"));
+            vt.add(rs.getString("UserID"));
+            vt.add(rs.getString("UserName"));
+            
             model.addRow(vt);
         }
-        tbtiendatcoc.setModel(model);
+        tbnguoithue.setModel(model);
         con.close();
     } catch (ClassNotFoundException | SQLException ex) {
         JOptionPane.showMessageDialog(null, ex);
     }
 }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,7 +73,7 @@ public void showtable() throws ClassNotFoundException, SQLException {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbtiendatcoc = new javax.swing.JTable();
+        tbnguoithue = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -106,21 +106,26 @@ public void showtable() throws ClassNotFoundException, SQLException {
         jLabel2.setBackground(new java.awt.Color(255, 255, 0));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel2.setText("TIỀN ĐẶT CỌC");
+        jLabel2.setText("NGƯỜI THUÊ");
 
-        tbtiendatcoc.setBackground(new java.awt.Color(207, 255, 255));
-        tbtiendatcoc.setModel(new javax.swing.table.DefaultTableModel(
+        tbnguoithue.setBackground(new java.awt.Color(207, 243, 243));
+        tbnguoithue.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Mã phòng trọ", "Tên người thuê", "Số tiền cọc", "Ngày bắt đầu", "Ngày kết thúc"
+                "ID Phòng trọ", "ID Người dùng", "Họ Tên"
             }
         ));
-        jScrollPane1.setViewportView(tbtiendatcoc);
+        tbnguoithue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbnguoithueMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbnguoithue);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,9 +137,9 @@ public void showtable() throws ClassNotFoundException, SQLException {
                         .addGap(353, 353, 353)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(129, Short.MAX_VALUE))
+                        .addGap(125, 125, 125)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,8 +147,8 @@ public void showtable() throws ClassNotFoundException, SQLException {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -195,18 +200,23 @@ public void showtable() throws ClassNotFoundException, SQLException {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tbnguoithueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbnguoithueMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbnguoithueMouseClicked
+
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         try {
             showtable();
         } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+             JOptionPane.showMessageDialog(null, ex);
         }
+        
     }//GEN-LAST:event_formComponentShown
 
     private void btlthoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlthoatActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+         System.exit(0);
     }//GEN-LAST:event_btlthoatActionPerformed
 
     /**
@@ -226,21 +236,20 @@ public void showtable() throws ClassNotFoundException, SQLException {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmTienDatCoc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmNguoiThue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmTienDatCoc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmNguoiThue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmTienDatCoc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmNguoiThue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmTienDatCoc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmNguoiThue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmTienDatCoc().setVisible(true);
+                new frmNguoiThue().setVisible(true);
             }
         });
     }
@@ -253,6 +262,6 @@ public void showtable() throws ClassNotFoundException, SQLException {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbtiendatcoc;
+    private javax.swing.JTable tbnguoithue;
     // End of variables declaration//GEN-END:variables
 }
