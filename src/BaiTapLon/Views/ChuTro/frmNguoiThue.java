@@ -18,44 +18,46 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmNguoiThue extends javax.swing.JFrame {
-String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
+
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
     String user = "sa";
     String pass = "bachdeptrai123";
+
     /**
      * Creates new form frmNguoiThue
      */
     public frmNguoiThue() {
         initComponents();
     }
-    public void showtable() throws ClassNotFoundException, SQLException {
-    tbnguoithue.removeAll();
-    try {
-        Connection con = null;
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        con = DriverManager.getConnection(url, user, pass);
- String sql = "SELECT nguoidung.id AS 'UserID', nguoidung.HoTen AS 'UserName', phongtro.id AS 'RoomID' "
-                   + "FROM NguoiDung nguoidung INNER JOIN PhongTro phongtro "
-                   + "ON nguoidung.id = phongtro.idNguoiDung WHERE phongtro.status = 1";
-         
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(sql); 
-        String[] rowhead = { "ID phòng trọ","ID Người Dùng", "Họ Tên" };
-        DefaultTableModel model = new DefaultTableModel(rowhead, 0);
-        while (rs.next()) {
-            Vector vt = new Vector();
-            vt.add(rs.getString("RoomID"));
-            vt.add(rs.getString("UserID"));
-            vt.add(rs.getString("UserName"));
-            
-            model.addRow(vt);
-        }
-        tbnguoithue.setModel(model);
-        con.close();
-    } catch (ClassNotFoundException | SQLException ex) {
-        JOptionPane.showMessageDialog(null, ex);
-    }
-}
 
+    public void showtable() throws ClassNotFoundException, SQLException {
+        tbnguoithue.removeAll();
+        try {
+            Connection con = null;
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+            String sql = "SELECT nguoidung.id AS 'UserID', nguoidung.HoTen AS 'UserName', phongtro.id AS 'RoomID' "
+                    + "FROM NguoiDung nguoidung INNER JOIN PhongTro phongtro "
+                    + "ON nguoidung.id = phongtro.idNguoiDung WHERE phongtro.status = 1";
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            String[] rowhead = {"ID phòng trọ", "ID Người Dùng", "Họ Tên"};
+            DefaultTableModel model = new DefaultTableModel(rowhead, 0);
+            while (rs.next()) {
+                Vector vt = new Vector();
+                vt.add(rs.getString("RoomID"));
+                vt.add(rs.getString("UserID"));
+                vt.add(rs.getString("UserName"));
+
+                model.addRow(vt);
+            }
+            tbnguoithue.setModel(model);
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,14 +211,14 @@ String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=tru
         try {
             showtable();
         } catch (ClassNotFoundException | SQLException ex) {
-             JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, ex);
         }
-        
+
     }//GEN-LAST:event_formComponentShown
 
     private void btlthoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlthoatActionPerformed
         // TODO add your handling code here:
-          this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btlthoatActionPerformed
 
     /**
