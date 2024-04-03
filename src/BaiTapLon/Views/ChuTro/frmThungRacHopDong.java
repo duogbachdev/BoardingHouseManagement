@@ -32,7 +32,7 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnTroVe = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("THÙNG RÁC HỢP ĐỒNG");
@@ -73,11 +73,16 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/delete.png"))); // NOI18N
         jButton5.setText("Xóa vĩnh viên");
 
-        jButton6.setBackground(new java.awt.Color(255, 205, 31));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(40, 46, 62));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/return (1).png"))); // NOI18N
-        jButton6.setText("Trở về");
+        btnTroVe.setBackground(new java.awt.Color(255, 205, 31));
+        btnTroVe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnTroVe.setForeground(new java.awt.Color(40, 46, 62));
+        btnTroVe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/return (1).png"))); // NOI18N
+        btnTroVe.setText("Trở về");
+        btnTroVe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTroVeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -88,7 +93,7 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnTroVe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(29, 29, 29))
         );
         jPanel3Layout.setVerticalGroup(
@@ -99,7 +104,7 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTroVe, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -131,6 +136,11 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTroVeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTroVeActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_btnTroVeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,9 +178,9 @@ public class frmThungRacHopDong extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTroVe;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;

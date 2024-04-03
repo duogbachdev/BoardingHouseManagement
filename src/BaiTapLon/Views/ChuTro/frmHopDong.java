@@ -4,17 +4,49 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import BaiTapLon.Controllers.HopDongController;
+import BaiTapLon.Model.HopDongModel;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class frmHopDong extends javax.swing.JFrame {
 
+    DefaultTableModel tblModel;
+    private static List<BaiTapLon.Model.HopDongModel> arrHopDong = new ArrayList<>();
+    private boolean ktThem;
+    private String macu, timKiem;
+    HopDongController hopDongControlller = new HopDongController();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    DecimalFormat formatter = new DecimalFormat("###,###,###");
+    DecimalFormat tien = new DecimalFormat("###,###,### VND");
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formattedDateTime = currentDateTime.format(formatterTime);
+
     /**
      * Creates new form frmHopDong
      */
     public frmHopDong() {
         initComponents();
+        initTable();
+        LayNguon();
+        KhoaMo(false);
     }
 
     /**
@@ -49,7 +81,6 @@ public class frmHopDong extends javax.swing.JFrame {
         txtDatCoc = new javax.swing.JTextField();
         txtGiaDien = new javax.swing.JTextField();
         txtGiaInternet = new javax.swing.JTextField();
-        txtTinhTrang = new javax.swing.JTextField();
         txtMaNguoiDung = new javax.swing.JTextField();
         txtGiaPhong = new javax.swing.JTextField();
         txtGiaNuoc = new javax.swing.JTextField();
@@ -59,6 +90,7 @@ public class frmHopDong extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         lblMaHĐ = new javax.swing.JLabel();
+        cbTinhTrang = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
@@ -69,7 +101,7 @@ public class frmHopDong extends javax.swing.JFrame {
         btnLuu = new javax.swing.JButton();
         btnKhongLuu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblHopDong = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản Lý Hợp Đồng");
@@ -179,7 +211,7 @@ public class frmHopDong extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 205, 31));
         jLabel14.setText("MÃ HĐ:");
 
-        lblMaHĐ.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblMaHĐ.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblMaHĐ.setForeground(new java.awt.Color(255, 205, 31));
         lblMaHĐ.setText("XX");
 
@@ -204,6 +236,8 @@ public class frmHopDong extends javax.swing.JFrame {
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
+        cbTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đang sử dụng", "Hết hạn", "Bị hủy" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -226,17 +260,20 @@ public class frmHopDong extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(txtGiaInternet))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(35, 35, 35)
-                                .addComponent(txtTinhTrang))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtMaPhongTro)
-                                    .addComponent(jdcNgayBatDauThue, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(cbTinhTrang, 0, 167, Short.MAX_VALUE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtMaPhongTro)
+                                            .addComponent(jdcNgayBatDauThue, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -305,12 +342,11 @@ public class frmHopDong extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel5)))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel12)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTinhTrang, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel13))
-                            .addComponent(jdcNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel13)
+                            .addComponent(jdcNgayTao, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                            .addComponent(cbTinhTrang)))
                     .addComponent(jdcNgayKTThue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -322,24 +358,44 @@ public class frmHopDong extends javax.swing.JFrame {
         btnThem.setForeground(new java.awt.Color(40, 46, 62));
         btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/add.png"))); // NOI18N
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnSua.setBackground(new java.awt.Color(255, 205, 31));
         btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSua.setForeground(new java.awt.Color(40, 46, 62));
         btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/edit.png"))); // NOI18N
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnThungRac.setBackground(new java.awt.Color(255, 205, 31));
         btnThungRac.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThungRac.setForeground(new java.awt.Color(40, 46, 62));
         btnThungRac.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/delete.png"))); // NOI18N
         btnThungRac.setText("Thùng rác");
+        btnThungRac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThungRacActionPerformed(evt);
+            }
+        });
 
         btnReset.setBackground(new java.awt.Color(255, 205, 31));
         btnReset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnReset.setForeground(new java.awt.Color(40, 46, 62));
         btnReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/return.png"))); // NOI18N
         btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         btnExport.setBackground(new java.awt.Color(255, 205, 31));
         btnExport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -358,12 +414,22 @@ public class frmHopDong extends javax.swing.JFrame {
         btnLuu.setForeground(new java.awt.Color(40, 46, 62));
         btnLuu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/diskette (1).png"))); // NOI18N
         btnLuu.setText("Lưu");
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
 
         btnKhongLuu.setBackground(new java.awt.Color(255, 205, 31));
         btnKhongLuu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnKhongLuu.setForeground(new java.awt.Color(40, 46, 62));
         btnKhongLuu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/cancel (1).png"))); // NOI18N
         btnKhongLuu.setText("Không lưu");
+        btnKhongLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKhongLuuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -410,28 +476,42 @@ public class frmHopDong extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setBackground(new java.awt.Color(207, 243, 243));
-        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(40, 46, 62));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblHopDong.setBackground(new java.awt.Color(207, 243, 243));
+        tblHopDong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblHopDong.setForeground(new java.awt.Color(40, 46, 62));
+        tblHopDong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "null", "null", "null"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setSelectionBackground(new java.awt.Color(46, 56, 86));
-        jTable1.setSelectionForeground(new java.awt.Color(255, 205, 31));
-        jScrollPane1.setViewportView(jTable1);
+        tblHopDong.setSelectionBackground(new java.awt.Color(46, 56, 86));
+        tblHopDong.setSelectionForeground(new java.awt.Color(255, 205, 31));
+        tblHopDong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHopDongMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblHopDong);
+        if (tblHopDong.getColumnModel().getColumnCount() > 0) {
+            tblHopDong.getColumnModel().getColumn(0).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(1).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(2).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(3).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(4).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(5).setResizable(false);
+            tblHopDong.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -477,19 +557,236 @@ public class frmHopDong extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
-        // TODO add your handling code here:
-        if (txtTimKiem.getText().equals("Nhập mã hợp đồng dể tìm kiếm hợp đồng")) {
-            txtTimKiem.setText("");
-        }
-    }//GEN-LAST:event_txtTimKiemFocusGained
+    public void initTable() {
+        tblModel = (DefaultTableModel) tblHopDong.getModel();
+        String[] columns = {
+            "Mã hợp đồng",
+            "Mã phòng trọ",
+            "Mã người dùng",
+            "Ngày BĐ",
+            "Ngày KT",
+            "Tình trạng",
+            "Giá phòng",};
+        tblModel.setColumnIdentifiers(columns);
+    }
 
-    private void txtTimKiemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusLost
-        // TODO add your handling code here:
-        if (txtTimKiem.getText().isEmpty()) {
-            txtTimKiem.setText("Nhập mã hợp đồng dể tìm kiếm hợp đồng!");
+    public void XoaTrang() {
+        lblMaHĐ.setText("");
+        txtMaPhongTro.setText("");
+        txtMaNguoiDung.setText("");
+        jdcNgayBatDauThue.setDate(null);
+        jdcNgayKTThue.setDate(null);
+        txtDatCoc.setText("");
+        txtGiaInternet.setText("");
+        txtGiaDien.setText("");
+        txtGiaNuoc.setText("");
+        txtGiaPhong.setText("");
+        txtGiaNuoc.setText("");
+        txtGiaRac.setText("");
+        jdcNgayTao.setDate(null);
+    }
+
+    public void KhoaMo(boolean b) {
+        txtMaPhongTro.setEditable(b);
+        txtMaNguoiDung.setEditable(b);
+        txtDatCoc.setEditable(b);
+        txtGiaDien.setEditable(b);
+        txtGiaInternet.setEditable(b);
+        txtGiaNuoc.setEditable(b);
+        txtGiaPhong.setEditable(b);
+        txtGiaRac.setEditable(b);
+        cbTinhTrang.setEnabled(b);
+        txtTimKiem.setEditable(b);
+        jdcNgayBatDauThue.setEnabled(b);
+        jdcNgayKTThue.setEnabled(b);
+        jdcNgayTao.setEnabled(b);
+
+        tblHopDong.setEnabled(!b);
+        btnThem.setEnabled(!b);
+        btnXoa.setEnabled(!b);
+        btnSua.setEnabled(!b);
+        btnReset.setEnabled(!b);
+        btnThungRac.setEnabled(!b);
+        btnExport.setEnabled(!b);
+
+        btnLuu.setEnabled(b);
+        btnKhongLuu.setEnabled(b);
+    }
+
+    public void LayNguon() {
+        arrHopDong = BaiTapLon.Controllers.HopDongController.LayNguonHopDong();
+        tblModel.setRowCount(0);
+        arrHopDong.forEach(HopDong -> {
+            tblModel.addRow(new Object[]{
+                HopDong.getId(),
+                HopDong.getIdMaPhongTro(),
+                HopDong.getIdNguoiDung(),
+                HopDong.getNgayBatDauThue(),
+                HopDong.getNgayKetThucThue(),
+                formatStatus(HopDong.getStatus()), // Sử dụng method formatStatus để hiển thị trạng thái
+                formatter.format(HopDong.getGiaPhong())
+            });
+        });
+    }
+
+    private String formatStatus(String status) {
+        switch (status) {
+            case "1":
+                return "Đang sử dụng";
+            case "2":
+                return "Hết hạn";
+            case "0":
+                return "Bị hủy";
+            default:
+                return "Không xác định";
         }
-    }//GEN-LAST:event_txtTimKiemFocusLost
+    }
+
+
+  private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
+      // TODO add your handling code here:
+      if (txtTimKiem.getText().equals("Nhập mã hợp đồng dể tìm kiếm hợp đồng")) {
+          txtTimKiem.setText("");
+      }
+  }//GEN-LAST:event_txtTimKiemFocusGained
+
+  private void txtTimKiemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusLost
+      // TODO add your handling code here:
+      if (txtTimKiem.getText().isEmpty()) {
+          txtTimKiem.setText("Nhập mã hợp đồng dể tìm kiếm hợp đồng!");
+      }
+  }//GEN-LAST:event_txtTimKiemFocusLost
+
+    public long getSelectedId() {
+        long selectedRow = tblHopDong.getSelectedRow();
+        if (selectedRow < 0) {
+            return -1;
+        }
+        long id = (long) tblHopDong.getValueAt((int) selectedRow, 0);
+        return id;
+    }
+
+  private void tblHopDongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHopDongMouseClicked
+      try {
+          // Lấy ID của hàng được chọn từ bảng
+          long selectedId = getSelectedId();
+          if (selectedId < 0) {
+              JOptionPane.showMessageDialog(null, "Chọn hợp đồng cần edit");
+              return; // Kết thúc xử lý nếu không có hàng nào được chọn
+          }
+
+          // Gọi phương thức để lấy thông tin hợp đồng dựa trên ID
+          HopDongModel hopDong = HopDongController.getHopDongById(selectedId);
+          if (hopDong == null) {
+              JOptionPane.showMessageDialog(null, "Hợp đồng bạn chọn không hợp lệ");
+              return; // Kết thúc xử lý nếu không có thông tin hợp đồng
+          }
+
+          // Hiển thị thông tin hợp đồng lên các trường dữ liệu
+          lblMaHĐ.setText(String.valueOf(hopDong.getId()));
+          txtMaPhongTro.setText(String.valueOf(hopDong.getIdMaPhongTro()));
+          txtMaNguoiDung.setText(String.valueOf(hopDong.getIdNguoiDung()));
+          jdcNgayBatDauThue.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(hopDong.getNgayBatDauThue()));
+          jdcNgayKTThue.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(hopDong.getNgayKetThucThue()));
+          txtDatCoc.setText(String.valueOf(formatter.format(hopDong.getTienDatCoc())));
+          txtGiaInternet.setText(String.valueOf(formatter.format(hopDong.getGiaInternet())));
+          txtGiaDien.setText(String.valueOf(formatter.format(hopDong.getGiaDien())));
+          txtGiaNuoc.setText(String.valueOf(formatter.format(hopDong.getGiaNuoc())));
+          txtGiaPhong.setText(String.valueOf(formatter.format(hopDong.getGiaPhong())));
+          txtGiaRac.setText(String.valueOf(formatter.format(hopDong.getGiaRac())));
+          jdcNgayTao.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(hopDong.getNgayTao()));
+          String status = hopDong.getStatus();
+          System.out.println("data" + status);
+          if ("1".equals(status)) {
+              cbTinhTrang.setSelectedItem("Đang sử dụng");
+          } else if ("2".equals(status)) {
+              cbTinhTrang.setSelectedItem("Hết hạn");
+          } else if ("CANCEL".equals(status)) {
+              cbTinhTrang.setSelectedItem("Bị hủy");
+          } else {
+              // Xử lý trường hợp không xác định
+          }
+
+      } catch (ParseException ex) {
+          Logger.getLogger(frmHopDong.class.getName()).log(Level.SEVERE, null, ex);
+      }
+  }//GEN-LAST:event_tblHopDongMouseClicked
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        XoaTrang();
+        KhoaMo(false);
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // TODO add your handling code here:
+        ktThem = true;
+        KhoaMo(true);
+        XoaTrang();
+        txtMaPhongTro.requestFocus();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnKhongLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhongLuuActionPerformed
+        // TODO add your handling code here:
+        KhoaMo(false);
+    }//GEN-LAST:event_btnKhongLuuActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+        if (txtMaNguoiDung.getText().length() <= 0) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn bản ghi hợp đồng để sửa.", "Cảnh Báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        ktThem = false;
+        macu = lblMaHĐ.getText();
+        KhoaMo(true);
+        txtMaPhongTro.requestFocus();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        // TODO add your handling code here:
+        long idMaPhongTro, idNguoiDung;
+        float tienDatCoc, giaPhong, giaDien, giaNuoc, giaInternet, giaRac, trash;
+        String status = null, ngayTao, nguoiTao, ngaySua, nguoiSua, ngayBatDauThue, ngayKetThucThue;
+
+        ngayTao = formattedDateTime;
+        idMaPhongTro = Long.parseLong(txtMaPhongTro.getText());
+        idNguoiDung = Long.parseLong(txtMaNguoiDung.getText());
+        ngayBatDauThue = sdf.format(jdcNgayBatDauThue.getDate());
+        ngayKetThucThue = sdf.format(jdcNgayKTThue.getDate());
+        tienDatCoc = Float.parseFloat(txtDatCoc.getText());
+        giaPhong = Float.parseFloat(txtGiaPhong.getText());
+        giaDien = Float.parseFloat(txtGiaDien.getText());
+        giaNuoc = Float.parseFloat(txtGiaNuoc.getText());
+        giaInternet = Float.parseFloat(txtGiaInternet.getText());
+        giaRac = Float.parseFloat(txtGiaRac.getText());
+
+        if (cbTinhTrang.getSelectedItem() == "Đã sử dụng") {
+            status = "1";
+        } else if (cbTinhTrang.getSelectedItem() == "Đã sử dụng") {
+            status = "2";
+        } else if (cbTinhTrang.getSelectedItem() == "Bị hủy") {
+            status = "0";
+        }
+        HopDongModel hopdong = new HopDongModel(idNguoiDung, idMaPhongTro, idNguoiDung, ngayBatDauThue, ngayKetThucThue, tienDatCoc, giaPhong, giaDien, giaNuoc, giaInternet, giaRac, 1, status, ngayTao, "duogbachdev", "", "");
+        if (ktThem == true) {
+            HopDongController.ThemHopDong(hopdong);
+        }
+//        else {
+//            NguoiDungController.CapNhatNguoiDung(nguoidung, macu);
+//        }
+
+        LayNguon();
+
+        KhoaMo(false);
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    private void btnThungRacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThungRacActionPerformed
+        // TODO add your handling code here:
+        frmThungRacHopDong frmTR = new frmThungRacHopDong();
+        frmTR.setVisible(true);
+    }//GEN-LAST:event_btnThungRacActionPerformed
 
     /**
      * @param args the command line arguments
@@ -498,32 +795,50 @@ public class frmHopDong extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmHopDong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger
+                    .getLogger(frmHopDong.class
+                            .getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmHopDong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger
+                    .getLogger(frmHopDong.class
+                            .getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmHopDong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger
+                    .getLogger(frmHopDong.class
+                            .getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmHopDong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger
+                    .getLogger(frmHopDong.class
+                            .getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(
+                new Runnable() {
             public void run() {
                 new frmHopDong().setVisible(true);
             }
-        });
+        }
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -536,6 +851,7 @@ public class frmHopDong extends javax.swing.JFrame {
     private javax.swing.JButton btnThungRac;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbTinhTrang;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -556,11 +872,11 @@ public class frmHopDong extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private com.toedter.calendar.JDateChooser jdcNgayBatDauThue;
     private com.toedter.calendar.JDateChooser jdcNgayKTThue;
     private com.toedter.calendar.JDateChooser jdcNgayTao;
     private javax.swing.JLabel lblMaHĐ;
+    private javax.swing.JTable tblHopDong;
     private javax.swing.JTextField txtDatCoc;
     private javax.swing.JTextField txtGiaDien;
     private javax.swing.JTextField txtGiaInternet;
@@ -570,6 +886,5 @@ public class frmHopDong extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaNguoiDung;
     private javax.swing.JTextField txtMaPhongTro;
     private javax.swing.JTextField txtTimKiem;
-    private javax.swing.JTextField txtTinhTrang;
     // End of variables declaration//GEN-END:variables
 }
