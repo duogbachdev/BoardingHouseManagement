@@ -4,6 +4,17 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -13,6 +24,11 @@ public class frmHoaDonChuaThanhToan extends javax.swing.JFrame {
     /**
      * Creates new form frmHoaDonChuaThanhToan
      */
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
+    String user = "sa";
+    String pass = "12345";
+    Connection con;
+
     public frmHoaDonChuaThanhToan() {
         initComponents();
     }
@@ -26,25 +42,197 @@ public class frmHoaDonChuaThanhToan extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbHoaDonChuaThanhToan = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel1.setText("BẢNG HÓA ĐƠN CHƯA THANH TOÁN");
+
+        tbHoaDonChuaThanhToan.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        tbHoaDonChuaThanhToan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID hóa đơn", "ID hợp đồng", "Ngày BĐ", "Ngày KT", "Tiền Điện", "Tiền Nước", "Tiền Internet", "Tiền rác", "Tiền phòng", "Khấu trừ", "Nợ", "Tổng cộng", "Tình trạng"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbHoaDonChuaThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbHoaDonChuaThanhToanMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbHoaDonChuaThanhToan);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(397, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(377, 377, 377))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tbHoaDonChuaThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHoaDonChuaThanhToanMouseClicked
+
+    }//GEN-LAST:event_tbHoaDonChuaThanhToanMouseClicked
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        try {
+            String sql = "SELECT * from HoaDon WHERE Status = 0";
+            fillHoaDon(sql);
+        } catch (ClassNotFoundException | SQLException e) {
+            Logger.getLogger(frmHoaDon.class.getName());
+        }
+    }//GEN-LAST:event_formComponentShown
+
     /**
      * @param args the command line arguments
      */
+    public void fillHoaDon(String sql) throws ClassNotFoundException, SQLException {
+        tbHoaDonChuaThanhToan.removeAll();
+        try {
+            Connection con = null;
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            // Lấy giá điện và giá nước từ bảng DonGia_Config
+            float giaDien = 0;
+            float giaNuoc = 0;
+            String sqlConfig = "SELECT * FROM DonGia_Config";
+            Statement stConfig = con.createStatement();
+            ResultSet rsConfig = stConfig.executeQuery(sqlConfig);
+            while (rsConfig.next()) {
+                String keyword = rsConfig.getString("Keyword");
+                float value = rsConfig.getFloat("Value");
+                if (keyword.equals("Giá điện")) {
+                    giaDien = value;
+                } else if (keyword.equals("Giá nước")) {
+                    giaNuoc = value;
+                }
+            }
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            String[] rowhead = {"ID hóa đơn", "ID hợp đồng", "Ngày BĐ", "Ngày KT", "Tiền điện", "Tiền nước", "Tiền Internet", "Tiền rác", "Tiền phòng", "Khấu trừ", "Nợ", "Tổng cộng", "Tình trạng"};
+            DefaultTableModel model = new DefaultTableModel(rowhead, 0);
+            while (rs.next()) {
+                Vector vt = new Vector();
+                vt.add(rs.getString("Id"));
+                vt.add(rs.getString("IdHopDong"));
+                vt.add(rs.getDate("NgayBatDau"));
+                vt.add(rs.getDate("NgayKetThuc"));
+
+                // Lấy giá trị từ cột SoDienCu, SoDienMoi, SoNuocCu, SoNuocMoi trong bảng HoaDon
+                float sodiencu = rs.getFloat("SoDienCu");
+                float sodienmoi = rs.getFloat("SoDienMoi");
+                float sonuoccu = rs.getFloat("SoNuocCu");
+                float sonuocmoi = rs.getFloat("SoNuocMoi");
+
+                // Tính toán tiền điện và tiền nước
+                float tienDien = 0;
+                float tienNuoc = 0;
+
+                // Nếu cả chỉ số và giá đều có giá trị hợp lệ, thực hiện tính toán
+                if (sodiencu != 0 && sodienmoi != 0 && giaDien != 0) {
+                    tienDien = (sodienmoi - sodiencu) * giaDien;
+                } else {
+                    // Nếu không thể tính toán, đặt tienDien = 0
+                    tienDien = 0;
+                }
+
+                if (sonuoccu != 0 && sonuocmoi != 0 && giaNuoc != 0) {
+                    tienNuoc = (sonuocmoi - sonuoccu) * giaNuoc;
+                } else {
+                    // Nếu không thể tính toán, đặt tienNuoc = 0
+                    tienNuoc = 0;
+                }
+
+                DecimalFormat decimalFormat = new DecimalFormat("#,###"); // Định dạng số
+                vt.add(decimalFormat.format(tienDien));
+                vt.add(decimalFormat.format(tienNuoc));
+
+                // Lấy giá trị TiềnPhong từ bảng HopDong dựa trên IdHopDong
+                String idHopDong = rs.getString("IdHopDong");
+                float tienPhong = 0;
+                float tieninternet = 0;
+                float tienrac = 0;
+                if (idHopDong != null && !idHopDong.isEmpty()) {
+                    String sqlHopDong = "SELECT GiaInternet, GiaRac, GiaPhong FROM HopDong WHERE Id = " + idHopDong;
+                    Statement stHopDong = con.createStatement();
+                    ResultSet rsHopDong = stHopDong.executeQuery(sqlHopDong);
+                    if (rsHopDong.next()) {
+                        tienPhong = rsHopDong.getFloat("GiaPhong");
+                        tieninternet = rsHopDong.getFloat("GiaInternet");
+                        tienrac = rsHopDong.getFloat("GiaRac");
+
+                    }
+                }
+
+                vt.add(decimalFormat.format(tieninternet));
+                vt.add(decimalFormat.format(tienrac));
+                vt.add(decimalFormat.format(tienPhong));
+                Object khauTruValue = rs.getObject("KhauTru");
+                String khauTruFormatted = khauTruValue instanceof Number ? decimalFormat.format(khauTruValue) : khauTruValue.toString();
+                vt.add(khauTruFormatted);
+
+                // Xử lý giá trị "Nợ"
+                Object tienNoValue = rs.getObject("TienNo");
+                String tienNoFormatted = tienNoValue instanceof Number ? decimalFormat.format(tienNoValue) : tienNoValue.toString();
+                vt.add(tienNoFormatted);
+
+                // Xử lý giá trị "Tổng cộng"
+                Object tongCongValue = rs.getObject("TongCong");
+                String tongCongFormatted = tongCongValue instanceof Number ? decimalFormat.format(tongCongValue) : tongCongValue.toString();
+                vt.add(tongCongFormatted);;
+
+                // Thêm tình trạng "đã thanh toán" hoặc "chưa thanh toán" dựa trên trường Status
+                int status = rs.getInt("Status");
+                String tinhTrang = status == 1 ? "đã thanh toán" : "chưa thanh toán";
+                vt.add(tinhTrang);
+
+                model.addRow(vt);
+            }
+            tbHoaDonChuaThanhToan.setModel(model);
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -78,5 +266,8 @@ public class frmHoaDonChuaThanhToan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbHoaDonChuaThanhToan;
     // End of variables declaration//GEN-END:variables
 }

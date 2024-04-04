@@ -4,6 +4,19 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.sql.*;
+
 /**
  *
  * @author ADMIN
@@ -13,6 +26,10 @@ public class frmDoiMatKhau extends javax.swing.JFrame {
     /**
      * Creates new form frmDoiMatKhau
      */
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
+    String user = "sa";
+    String pass = "12345";
+    Connection con = null;
     public frmDoiMatKhau() {
         initComponents();
     }
@@ -26,31 +43,218 @@ public class frmDoiMatKhau extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtMatkhaumoi = new javax.swing.JTextField();
+        txtXacnhanmatkhaumoi = new javax.swing.JTextField();
+        btnDoimatkhau = new javax.swing.JButton();
+        txtMatKhauCu = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
-        jLabel1.setText("Doi Mat Khau");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Mật khẩu cũ:");
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel3.setText("ĐỔI MẬT KHẨU");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Mật khẩu mới:");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Xác nhận mật khẩu mới:");
+
+        txtMatkhaumoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMatkhaumoiActionPerformed(evt);
+            }
+        });
+
+        txtXacnhanmatkhaumoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtXacnhanmatkhaumoiActionPerformed(evt);
+            }
+        });
+
+        btnDoimatkhau.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnDoimatkhau.setText("ĐỔI");
+        btnDoimatkhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoimatkhauActionPerformed(evt);
+            }
+        });
+
+        txtMatKhauCu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMatKhauCuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(jLabel1)
-                .addContainerGap(184, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtMatkhaumoi)
+                    .addComponent(txtXacnhanmatkhaumoi)
+                    .addComponent(txtMatKhauCu, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                .addGap(62, 62, 62))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(185, 185, 185)
+                        .addComponent(btnDoimatkhau))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(jLabel3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(94, 94, 94)
-                .addComponent(jLabel1)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtMatKhauCu))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtMatkhaumoi))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtXacnhanmatkhaumoi))
+                .addGap(39, 39, 39)
+                .addComponent(btnDoimatkhau)
+                .addGap(57, 57, 57))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtXacnhanmatkhaumoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtXacnhanmatkhaumoiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtXacnhanmatkhaumoiActionPerformed
+
+    private void txtMatkhaumoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatkhaumoiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMatkhaumoiActionPerformed
+
+    private void btnDoimatkhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoimatkhauActionPerformed
+        String makhaucu = txtMatKhauCu.getText();
+        String matkhaumoi = txtMatkhaumoi.getText();
+        String xnmatkhaumoi = txtXacnhanmatkhaumoi.getText();
+
+        // Kiểm tra xem đã nhập đủ 3 thông tin hay chưa
+        if (makhaucu.isEmpty() || matkhaumoi.isEmpty() || xnmatkhaumoi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin");
+            return;
+        }
+
+        // Kiểm tra xem mật khẩu mới chứa ký tự từ a-z, A-Z và 0-9
+        if (!matkhaumoi.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải chứa ít nhất một ký tự từ a-z, A-Z và 0-9");
+            return;
+        }
+
+        Connection con = null;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            // Kiểm tra mật khẩu cũ và vai trò của người dùng
+            String query = "SELECT Matkhau, VaiTro FROM NguoiDung WHERE Matkhau = ?";
+            PreparedStatement checkStmt = con.prepareStatement(query);
+            checkStmt.setString(1, makhaucu);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                String vaiTro = rs.getString("VaiTro");
+                // Kiểm tra vai trò của người dùng
+                if (!vaiTro.equals("Admin")) {
+                    JOptionPane.showMessageDialog(this, "Chỉ người dùng có vai trò 'Admin' mới có quyền đổi mật khẩu");
+                } else {
+                    // Mật khẩu cũ hợp lệ, kiểm tra mật khẩu mới
+                    if (!matkhaumoi.equals(xnmatkhaumoi)) {
+                        JOptionPane.showMessageDialog(this, "Xác nhận mật khẩu mới không khớp");
+                    } else {
+                        // Đổi mật khẩu
+                        String updateQuery = "UPDATE Nguoidung SET Matkhau = ? WHERE Matkhau = ?";
+                        PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+                        updateStmt.setString(1, matkhaumoi);
+                        updateStmt.setString(2, makhaucu);
+                        int rowsAffected = updateStmt.executeUpdate();
+
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công");
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi khi đổi mật khẩu");
+                        }
+
+                        updateStmt.close();
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Mật khẩu cũ không chính xác");
+            }
+
+            checkStmt.close();
+            con.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi thực hiện đổi mật khẩu");
+        }
+    }//GEN-LAST:event_btnDoimatkhauActionPerformed
+
+    private void txtMatKhauCuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauCuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMatKhauCuActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        try {
+            ResultSet rs = null;
+            // Kết nối tới cơ sở dữ liệu
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            // Truy vấn để lấy dữ liệu MatKhauCu từ bảng NguoiDung (thay đổi tên bảng và cột nếu cần)
+            String sql = "SELECT MatKhauCu FROM NguoiDung ";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Kiểm tra xem có dữ liệu trả về hay không
+            if (rs.next()) {
+                // Lấy giá trị từ cột MatKhauCu (thay đổi tên cột nếu cần)
+                String matKhauCu = rs.getString("MatKhauCu");
+
+                // Hiển thị giá trị lên txtMatKhauCu (thay đổi tên txtMatKhauCu nếu cần)
+                txtMatKhauCu.setText(matKhauCu);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        }
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments
@@ -88,6 +292,13 @@ public class frmDoiMatKhau extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnDoimatkhau;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtMatKhauCu;
+    private javax.swing.JTextField txtMatkhaumoi;
+    private javax.swing.JTextField txtXacnhanmatkhaumoi;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null"  pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2193272a-1b1a-45ad-bcbb-9463e2f1c166">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="maHoaDon" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT        dbo.HoaDon.Id, dbo.PhongTro.TenPhong, dbo.HoaDon.NgayBatDau, dbo.HoaDon.NgayKetThuc, dbo.HoaDon.SoDienCu, dbo.HoaDon.SoDienMoi, dbo.HoaDon.SoNuocCu, dbo.HoaDon.SoNuocMoi, dbo.HoaDon.KhauTru, 
+                         dbo.HoaDon.TienNo, dbo.HoaDon.TongCong, dbo.HoaDon.NgayTao, dbo.HopDong.GiaPhong, dbo.HopDong.GiaInternet, dbo.HopDong.GiaRac, dbo.NguoiDung.DienThoai, dbo.NguoiDung.HoTen, dbo.HoaDon.Trash
+FROM            dbo.HoaDon INNER JOIN
+                         dbo.HopDong ON dbo.HoaDon.IdHopDong = dbo.HopDong.Id AND dbo.HoaDon.IdHopDong = dbo.HopDong.Id AND dbo.HoaDon.IdHopDong = dbo.HopDong.Id AND dbo.HoaDon.IdHopDong = dbo.HopDong.Id INNER JOIN
+                         dbo.NguoiDung ON dbo.HopDong.IdNguoiDung = dbo.NguoiDung.Id AND dbo.HopDong.IdNguoiDung = dbo.NguoiDung.Id AND dbo.HopDong.IdNguoiDung = dbo.NguoiDung.Id AND 
+                         dbo.HopDong.IdNguoiDung = dbo.NguoiDung.Id INNER JOIN
+                         dbo.PhongTro ON dbo.HopDong.IdMaPhongTro = dbo.PhongTro.Id AND dbo.HopDong.IdMaPhongTro = dbo.PhongTro.Id AND dbo.HopDong.IdMaPhongTro = dbo.PhongTro.Id AND 
+                         dbo.HopDong.IdMaPhongTro = dbo.PhongTro.Id AND dbo.NguoiDung.Id = dbo.PhongTro.IdNguoiDung AND dbo.NguoiDung.Id = dbo.PhongTro.IdNguoiDung AND dbo.NguoiDung.Id = dbo.PhongTro.IdNguoiDung AND 
+                         dbo.NguoiDung.Id = dbo.PhongTro.IdNguoiDung
+WHERE  dbo.HoaDon.Trash = 1  AND dbo.HoaDon.Id = $P{maHoaDon}]]>
+	</queryString>
+	<field name="Id" class="java.lang.Long"/>
+	<field name="TenPhong" class="java.lang.String"/>
+	<field name="NgayBatDau" class="java.sql.Timestamp"/>
+	<field name="NgayKetThuc" class="java.sql.Timestamp"/>
+	<field name="SoDienCu" class="java.lang.Double"/>
+	<field name="SoDienMoi" class="java.lang.Double"/>
+	<field name="SoNuocCu" class="java.lang.Double"/>
+	<field name="SoNuocMoi" class="java.lang.Double"/>
+	<field name="KhauTru" class="java.lang.Double"/>
+	<field name="TienNo" class="java.lang.Double"/>
+	<field name="TongCong" class="java.lang.Double"/>
+	<field name="NgayTao" class="java.sql.Timestamp"/>
+	<field name="GiaPhong" class="java.lang.Double"/>
+	<field name="GiaInternet" class="java.lang.Double"/>
+	<field name="GiaRac" class="java.lang.Double"/>
+	<field name="DienThoai" class="java.lang.String"/>
+	<field name="HoTen" class="java.lang.String"/>
+	<field name="Trash" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="180" splitType="Stretch">
+			<staticText>
+				<reportElement x="562" y="-1" width="121" height="43" uuid="ba92399a-81b3-4130-85c3-2377c60ed61a"/>
+				<textElement>
+					<font fontName="Arial" size="30"/>
+				</textElement>
+				<text><![CDATA[Trọ Việt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="545" y="146" width="81" height="20" uuid="e1ad3897-c2ea-4e2d-bae7-5519a1773a9a"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Mã hóa đơn:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="562" y="62" width="101" height="20" uuid="75f9ff1d-624a-4b8d-8404-60eb951045ed"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Liên hệ: 0986236999]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="145" width="72" height="21" uuid="a409b608-3caf-4cd4-9410-98fe51a33b2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Ngày Tạo:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="146" y="146" width="166" height="20" uuid="a34afb21-269a-4a07-9db7-36d0b514738f"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NgayTao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="640" y="146" width="65" height="20" uuid="1e3ab5d5-0358-4900-b829-33ddb2fac357"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="271" y="90" width="258" height="43" uuid="ef9f18c0-1ce4-4fae-b32b-9e920ff38690"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="20"/>
+				</textElement>
+				<text><![CDATA[HÓA ĐƠN THANH THOÁN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="562" y="42" width="213" height="20" uuid="97e25a05-bdf3-4160-9e68-c578c74b647d"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Địa chỉ: Số 52 Triều Khúc, Thanh Xuân, Hà Nội]]></text>
+			</staticText>
+			<image>
+				<reportElement x="68" y="-17" width="150" height="150" uuid="45d1dc91-b5d7-4cc2-af15-c7b32a8143ce"/>
+				<imageExpression><![CDATA["D:\\Downloads\\3cf3bbf96663fefac4e687373e2fdecc.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="185" y="26" width="100" height="20" uuid="2eafba86-e574-4619-8cb0-6094f7838d7d"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DienThoai}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="56" width="100" height="20" uuid="0e40399e-af67-449e-a0e0-8b0018ea29d7"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TenPhong}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="56" width="100" height="20" uuid="87bd4cc8-3ab7-445e-9915-f4bfb4fee128"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Tên phòng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="0" width="100" height="20" uuid="b6ebf26c-a59f-4f2f-8c71-0843e7e5b850"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Ngày bắt đầu:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="567" y="26" width="144" height="20" uuid="388e022b-f332-41d4-8e02-efc59bfef12d"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NgayKetThuc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="0" width="100" height="20" uuid="79f921f7-a5be-472f-b4a7-292c5539ae3e"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Họ tên:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="567" y="0" width="144" height="20" uuid="70fa7ec2-3a61-464f-82fd-de7709b19774"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NgayBatDau}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="445" y="26" width="100" height="20" uuid="bf28623d-ac26-4624-ba59-f18aeeab47b3"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Ngày kết thúc:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="185" y="0" width="100" height="20" uuid="ec52a123-c7fe-4f13-9684-e872426f9720"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HoTen}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="26" width="100" height="20" uuid="47b7c288-be37-4fe0-b181-02119c625d15"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Số Điện Thoại:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="154" splitType="Stretch">
+			<staticText>
+				<reportElement x="445" y="31" width="100" height="20" uuid="76561f15-3a8f-418a-a0bd-a1444dbbde79"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Số điện mới:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="0" width="100" height="20" uuid="20d8716e-9144-478c-8cf7-a47991566521"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Số điện cũ:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="569" y="0" width="100" height="20" uuid="2559f4d7-2826-47f2-a353-e8d249fbf980"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SoDienCu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="569" y="31" width="100" height="20" uuid="ced992ea-15f2-4acc-95cd-4dcad540744e"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SoDienMoi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="0" width="100" height="20" uuid="e671cf6e-ddd6-4dbf-b75b-9333dea204d9"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Số nước cũ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="31" width="100" height="20" uuid="6f393332-7182-4b42-9d02-166f064551bb"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Số nước mới:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="185" y="0" width="100" height="20" uuid="d4136156-0629-4b2d-9f6e-ba2e9a0f31db"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SoNuocCu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="185" y="31" width="100" height="20" uuid="85076f81-e899-424a-9ac1-6a9568c4678c"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SoNuocMoi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="671" y="98" width="32" height="20" uuid="2f732539-d971-41ce-b9c4-6084f6386958"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[VND]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="567" y="98" width="91" height="20" uuid="0cadde82-619b-40a4-b6ab-abfe3a3934d7"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GiaPhong}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="567" y="64" width="100" height="20" uuid="09eef044-cfa6-4a3f-b1f5-31b1c523d41f"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GiaRac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="445" y="64" width="100" height="20" uuid="e02d39ae-3608-49be-9eff-2eb70656713a"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Giá Rác:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="98" width="100" height="20" uuid="d858374c-a194-475e-b88b-112e588be19e"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Giá phòng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="98" width="100" height="20" uuid="6868144a-dc2c-4b9f-88cf-d415360797f1"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Tiền nợ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="64" width="100" height="20" uuid="60447ce3-661d-4fe0-adee-8f51fc9378b7"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Giá Internet:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="187" y="64" width="100" height="20" uuid="8f9aa548-e003-462c-a9ce-f999b59b0f43"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GiaInternet}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="98" width="32" height="20" uuid="83c836ce-f438-4ff5-9724-0ceb5a0afcd7"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[VND]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="187" y="98" width="100" height="20" uuid="6fe5b1bc-3cec-40f2-ac73-ec5ced66286a"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TienNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="185" y="134" width="100" height="20" uuid="5b4b4bc0-9086-49ec-9165-370bf9056199"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KhauTru}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="134" width="32" height="20" uuid="f3e62bcf-2e4a-4025-a32f-b4e25b92d540"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[VND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="134" width="100" height="20" uuid="a1a8f748-9c8f-40dc-a5b1-a126e55dac4a"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Khấu trừ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="671" y="134" width="32" height="20" forecolor="#FF0000" uuid="16525472-0afd-49aa-9323-55c8d11285a0"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[VND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="134" width="100" height="20" forecolor="#FF0000" uuid="d089eb00-a41c-4eac-81d0-9f5640f2c444"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Tổng cộng:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="567" y="134" width="100" height="20" forecolor="#FF0000" uuid="501556e7-0a56-4cc1-ad3b-5e2feb997cdc"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TongCong}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="81" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="545" y="22" width="183" height="20" uuid="9ad11ecc-a12d-49ce-bad2-dee1b332620d"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Chuyển Khoản qua Ngân hàng MB Bank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="545" y="42" width="151" height="20" uuid="65a1479c-5393-45a6-bcdc-023e6400f9d8"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[STK: 666699992202]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="80" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
