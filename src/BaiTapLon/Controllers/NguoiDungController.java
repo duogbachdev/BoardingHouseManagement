@@ -1,5 +1,6 @@
 package BaiTapLon.Controllers;
 
+import BaiTapLon.Model.NguoiDungModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,6 +28,7 @@ public class NguoiDungController {
     public static String sql;
     private static String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;user=sa;password=bachdeptrai123";
     private static List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
+    private static List<BaiTapLon.Model.NguoiDungModel> arr = new ArrayList<>();
 
     public static List<BaiTapLon.Model.NguoiDungModel> LayNguonNguoiDung() {
         try {
@@ -207,5 +209,47 @@ public class NguoiDungController {
             }
         }
         return arrNguoiDung;
+    }
+    
+    public static List<NguoiDungModel> LayNguonThungRacNguoiDung() {
+        List<NguoiDungModel> arrThungRacNguoiDung = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection(dbURL);
+            sql = "SELECT * FROM NguoiDung where trash = 0 ";
+            state = conn.createStatement();
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                BaiTapLon.Model.NguoiDungModel user = new BaiTapLon.Model.NguoiDungModel();
+                user.setId(rs.getLong("Id"));
+                user.setHoTen(rs.getString("HoTen"));
+                user.setDienThoai(rs.getString("DienThoai"));
+                user.setEmail(rs.getString("Email"));
+                user.setDiaChi(rs.getString("DiaChi"));
+                user.setMatKhau(rs.getString("MatKhau"));
+                user.setRole(rs.getString("VaiTro"));
+                arrNguoiDung.add(user);
+            }
+            state.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (state != null) {
+                try {
+                    state.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(NguoiDungController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+        return arrThungRacNguoiDung;
     }
 }

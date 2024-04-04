@@ -26,7 +26,7 @@ public class LoaiPhongController {
     public static String sql;
     private static String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;user=sa;password=bachdeptrai123";
     private static List<BaiTapLon.Model.LoaiPhongModel> arrLoaiPhong = new ArrayList<>();
-    
+
     public static List<BaiTapLon.Model.LoaiPhongModel> LayNguonLoaiPhong() {
         try {
             conn = DriverManager.getConnection(dbURL);
@@ -62,7 +62,7 @@ public class LoaiPhongController {
         }
         return arrLoaiPhong;
     }
-    
+
     public static void ThemKhuVuc(BaiTapLon.Model.LoaiPhongModel loaiphong) {
         PreparedStatement state = null;
         try {
@@ -124,6 +124,37 @@ public class LoaiPhongController {
                     Logger.getLogger(LoaiPhongController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+    }
+
+    public static void XoaLoaiPhong(String macu) {
+        Connection conn = null;
+        PreparedStatement state = null;
+        try {
+            conn = DriverManager.getConnection(dbURL);
+            String sql = "DELETE FROM LoaiPhong Where Id=?";
+            state = conn.prepareStatement(sql);
+            state.setString(1, macu);
+            state.execute();
+            state.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (state != null) {
+                try {
+                    state.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoaiPhongController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoaiPhongController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         }
     }
 }

@@ -135,4 +135,35 @@ public class KhuVucController {
             }
         }
     }
+
+    public static void XoaKhuVuc(String macu) {
+        Connection conn = null;
+        PreparedStatement state = null;
+        try {
+            conn = DriverManager.getConnection(dbURL);
+            String sql = "DELETE FROM KhuVuc Where Id=?";
+            state = conn.prepareStatement(sql);
+            state.setString(1, macu);
+            state.execute();
+            state.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (state != null) {
+                try {
+                    state.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KhuVucController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KhuVucController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }
 }

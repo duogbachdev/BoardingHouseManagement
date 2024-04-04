@@ -4,17 +4,61 @@
  */
 package BaiTapLon.Views.ChuTro;
 
+import BaiTapLon.Controllers.NguoiDungController;
+import BaiTapLon.Model.NguoiDungModel;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class frmThungRacNguoiDung extends javax.swing.JFrame {
 
+    DecimalFormat formatter = new DecimalFormat("###,###,###");
+    DefaultTableModel model;
+    private static List<BaiTapLon.Model.NguoiDungModel> arrNguoiDung = new ArrayList<>();
+
     /**
      * Creates new form frmThungRacNguoiDung
      */
     public frmThungRacNguoiDung() {
         initComponents();
+        initTable();
+        LayNguon();
+    }
+
+    public void initTable() {
+        model = (DefaultTableModel) tblThungRacNguoiDung.getModel();
+        String[] columns = {
+            "Mã Người Dùng",
+            "Họ tên",
+            "Số Điện Thoại",
+            "Email",
+            "Địa chỉ",
+            "Mật khẩu",
+            "Phân quyền",};
+        model.setColumnIdentifiers(columns);
+    }
+
+    public void LayNguon() {
+        arrNguoiDung = BaiTapLon.Controllers.NguoiDungController.LayNguonNguoiDung();
+        //        System.out.println("data" + arrNguoiDung);
+        model.setRowCount(0);
+        arrNguoiDung.forEach(NguoiDung -> {
+            model.addRow(
+                    new Object[]{
+                        NguoiDung.getId(),
+                        NguoiDung.getHoTen(),
+                        NguoiDung.getDienThoai(),
+                        NguoiDung.getEmail(),
+                        NguoiDung.getDiaChi(),
+                        NguoiDung.getMatKhau(),
+                        NguoiDung.getRole(),}
+            );
+        });
     }
 
     /**
@@ -28,7 +72,7 @@ public class frmThungRacNguoiDung extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblThungRacNguoiDung = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -39,25 +83,34 @@ public class frmThungRacNguoiDung extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(40, 46, 62));
 
-        jTable1.setBackground(new java.awt.Color(207, 243, 243));
-        jTable1.setForeground(new java.awt.Color(207, 243, 243));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblThungRacNguoiDung.setBackground(new java.awt.Color(207, 243, 243));
+        tblThungRacNguoiDung.setForeground(new java.awt.Color(207, 243, 243));
+        tblThungRacNguoiDung.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "null", "null", "null"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblThungRacNguoiDung);
+        if (tblThungRacNguoiDung.getColumnModel().getColumnCount() > 0) {
+            tblThungRacNguoiDung.getColumnModel().getColumn(0).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(1).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(2).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(3).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(4).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(5).setResizable(false);
+            tblThungRacNguoiDung.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         jPanel3.setBackground(new java.awt.Color(40, 46, 62));
 
@@ -169,16 +222,12 @@ public class frmThungRacNguoiDung extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblThungRacNguoiDung;
     // End of variables declaration//GEN-END:variables
 }
