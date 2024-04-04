@@ -24,7 +24,7 @@ public class LoaiPhongController {
 
     public static Connection conn = null;
     public static Statement state = null;
-    public static String sql;
+    public static String sql, duogbachdev;
     private static String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;user=sa;password=bachdeptrai123";
     private static List<BaiTapLon.Model.LoaiPhongModel> arrLoaiPhong = new ArrayList<>();
     
