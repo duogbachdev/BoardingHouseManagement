@@ -4,19 +4,6 @@
  */
 package BaiTapLon.Views.ChuTro;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 /**
  *
  * @author ADMIN
@@ -29,45 +16,6 @@ public class frmThungRacPhongTro extends javax.swing.JFrame {
     public frmThungRacPhongTro() {
         initComponents();
     }
-    String url = "jdbc:sqlserver://localhost:1433;databaseName=BaiTapLon;encrypt=true;trustServerCertificate=true;";
-    String user = "sa";
-    String pass = "bachdeptrai123";
-    Connection con = null;
-
-    public void showtable() throws ClassNotFoundException, SQLException {
-        tblthungrac.removeAll();
-        try {
-            Connection con = null;
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(url, user, pass);
-            String sql = "SELECT * FROM PhongTro WHERE Trash = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, 0);
-
-            ResultSet rs = pstmt.executeQuery();
-            String[] rowhead = {"ID", "IdMaLoaiPhong", "IdNguoiDung", "IdKhuVuc", "TenPhong", "DienTich", "GiaPhong", "DiaChi",
-                "MoTa", "Status"};
-            DefaultTableModel model = new DefaultTableModel(rowhead, 0);
-            while (rs.next()) {
-                Vector vt = new Vector();
-                vt.add(rs.getString("ID"));
-                vt.add(rs.getString("IdMaLoaiPhong"));
-                vt.add(rs.getString("IdNguoiDung"));
-                vt.add(rs.getString("IdKhuVuc"));
-                vt.add(rs.getString("TenPhong"));
-                vt.add(rs.getString("DienTich"));
-                vt.add(rs.getString("GiaPhong"));
-                vt.add(rs.getString("DiaChi"));
-                vt.add(rs.getString("MoTa"));
-                vt.add(rs.getString("Status"));
-                model.addRow(vt);
-            }
-            tblthungrac.setModel(model);
-            con.close();
-        } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,261 +26,21 @@ public class frmThungRacPhongTro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblthungrac = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        btnkhoiphuc = new javax.swing.JButton();
-        btnxoavinhvien = new javax.swing.JButton();
-        btntrove = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
-
-        tblthungrac.setBackground(new java.awt.Color(207, 243, 243));
-        tblthungrac.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "IDLP", "IDND", "IDKV", "Tên Phòng", "Diện Tích", "Giá Phòng", "Địa chỉ", "Mô tả", "Trạng thái"
-            }
-        ));
-        tblthungrac.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblthungracMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tblthungrac);
-
-        jPanel2.setBackground(new java.awt.Color(46, 56, 86));
-
-        btnkhoiphuc.setBackground(new java.awt.Color(255, 205, 31));
-        btnkhoiphuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnkhoiphuc.setForeground(new java.awt.Color(40, 46, 62));
-        btnkhoiphuc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/return.png"))); // NOI18N
-        btnkhoiphuc.setText("Khôi phục");
-        btnkhoiphuc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnkhoiphucActionPerformed(evt);
-            }
-        });
-
-        btnxoavinhvien.setBackground(new java.awt.Color(255, 205, 31));
-        btnxoavinhvien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnxoavinhvien.setForeground(new java.awt.Color(40, 46, 62));
-        btnxoavinhvien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/delete.png"))); // NOI18N
-        btnxoavinhvien.setText("Xóa vĩnh viễn");
-        btnxoavinhvien.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnxoavinhvienActionPerformed(evt);
-            }
-        });
-
-        btntrove.setBackground(new java.awt.Color(255, 205, 31));
-        btntrove.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btntrove.setForeground(new java.awt.Color(40, 46, 62));
-        btntrove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/BaiTapLon/Icon/return (1).png"))); // NOI18N
-        btntrove.setText("Trở về");
-        btntrove.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btntroveActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnkhoiphuc, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnxoavinhvien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btntrove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(47, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(btnkhoiphuc, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnxoavinhvien, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btntrove, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 70, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btntroveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntroveActionPerformed
-        // TODO add your handling code here:
-        frmQuanLyPhongTro QuanLyPhongTro = new frmQuanLyPhongTro();
-        QuanLyPhongTro.setVisible(true);
-    }//GEN-LAST:event_btntroveActionPerformed
-private String getStringValue(Object value) {
-    return value != null ? value.toString() : "";
-}
-    private void tblthungracMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblthungracMouseClicked
-        int index = tblthungrac.getSelectedRow();
-        if (index != -1) {
-            TableModel model = tblthungrac.getModel();
-        String id = getStringValue(model.getValueAt(index, 0));
-        String maloaiphong = getStringValue(model.getValueAt(index, 1));
-        String manguoidung = getStringValue(model.getValueAt(index, 2));
-        String makhuvuc = getStringValue(model.getValueAt(index, 3));
-        String tenphong = getStringValue(model.getValueAt(index, 4));
-        String dientich = getStringValue(model.getValueAt(index, 5));
-        String giaphong = getStringValue(model.getValueAt(index, 6));
-        String diachi = getStringValue(model.getValueAt(index, 7));
-        String mota = getStringValue(model.getValueAt(index, 8));
-        String status = getStringValue(model.getValueAt(index, 9)); // Lấy giá trị      
-        }
-    }//GEN-LAST:event_tblthungracMouseClicked
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
-        try {
-            showtable();
-        } catch (Exception e) {
-        }
-
-    }//GEN-LAST:event_formComponentShown
-
-    private void btnkhoiphucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkhoiphucActionPerformed
-        // TODO add your handling code here:
-        int index = tblthungrac.getSelectedRow();
-        if (index == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng khôi phục.");
-            return;
-        }
-
-        try {
-            // Lấy ID của hàng được chọn trong bảng
-            int id = Integer.parseInt(tblthungrac.getValueAt(index, 0).toString());
-
-            // Xác nhận việc xóa từ người dùng
-            int choice = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn khôi phục bản ghi này ?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
-            if (choice != JOptionPane.YES_OPTION) {
-                return;
-            }
-
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(url, user, pass);
-
-            String sql = "UPDATE PhongTro SET trash = ? WHERE Id = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, 1);
-            pstmt.setInt(2, id);
-
-            int rowsAffected = pstmt.executeUpdate();
-            pstmt.close();
-            con.close();
-
-            if (rowsAffected > 0) {
-                // Hiển thị lại dữ liệu trong bảng
-                showtable();
-                JOptionPane.showMessageDialog(this, "Khôi Phục và chuyển vào quản lý phòng trọ thành công");
-            } else {
-                JOptionPane.showMessageDialog(this, "Khôi Phục và chuyển vào quản lý phòng trọ thất bại");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi hệ thống: " + e.getMessage());
-        }
-
-    }//GEN-LAST:event_btnkhoiphucActionPerformed
-
-    private void btnxoavinhvienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoavinhvienActionPerformed
-        // TODO add your handling code here:
-        try {
-            // Lấy index của dòng được chọn trong bảng
-            int row = tblthungrac.getSelectedRow();
-            if (row == -1) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa.");
-                return;
-            }
-            
-            // Lấy ID của phòng trọ từ dòng được chọn
-            String idPhongTro = tblthungrac.getValueAt(row,0).toString();
-           
-            // Kết nối đến cơ sở dữ liệu
-            Connection con = DriverManager.getConnection(url, user, pass);
-
-            // Chuẩn bị câu lệnh SQL DELETE
-            String sql = "DELETE FROM PhongTro WHERE Id = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, idPhongTro);
-
-            // Thực hiện câu lệnh DELETE
-            int rowsAffected = pstmt.executeUpdate();
-
-            // Kiểm tra xem có dòng nào bị ảnh hưởng hay không
-            if (rowsAffected > 0) {
-                // Nếu có, cập nhật lại bảng hiển thị
-                showtable();
-                JOptionPane.showMessageDialog(this, "Xóa phòng trọ thành công.");
-            } else {
-                // Nếu không, thông báo cho người dùng biết không có dòng nào bị xóa
-                JOptionPane.showMessageDialog(this, "Không có phòng trọ nào được xóa.");
-            }
-
-            // Đóng kết nối và tài nguyên
-            pstmt.close();
-            con.close();
-        } catch (SQLException ex) {
-            // Xử lý nếu có lỗi xảy ra khi thao tác với cơ sở dữ liệu
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi xóa phòng trọ: " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(frmThungRacPhongTro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnxoavinhvienActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,12 +78,5 @@ private String getStringValue(Object value) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnkhoiphuc;
-    private javax.swing.JButton btntrove;
-    private javax.swing.JButton btnxoavinhvien;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblthungrac;
     // End of variables declaration//GEN-END:variables
 }
